@@ -66,8 +66,8 @@ WSGI_APPLICATION = "core.wsgi.application"
 # }
 
 
-# SECRET_KEY = config('SECRET_KEY', default='hjg^&%**%%^*GHVGJHGKJGKH')
-# DEBUG = config('DEBUG', default=False, cast=bool)
+SECRET_KEY = config('SECRET_KEY', default='hjg^&%**%%^*GHVGJHGKJGKH')
+DEBUG = config('DEBUG', default=False, cast=bool)
 DATABASES = {
     'default': {
         'ENGINE': config('DB_ENGINE', default='django.db.backends.sqlite3'),
