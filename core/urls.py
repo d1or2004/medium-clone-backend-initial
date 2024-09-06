@@ -1,11 +1,12 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.http import JsonResponse
-from django.urls import path
+from django.urls import path, include
 from django.contrib import admin
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('users/', include('users.urls')),
     path('health/', lambda _: JsonResponse({'detail': 'Healthy'}), name='health'),
 ]
 if settings.DEBUG:
