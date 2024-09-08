@@ -1,6 +1,6 @@
 from pathlib import Path
 from decouple import config
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -48,6 +48,10 @@ EXTERNAL_APPS = [
 LOCAL_APPS = [
     'users',
 ]
+
+# birthday
+BIRTH_YEAR_MIN = 1900
+BIRTH_YEAR_MAX = datetime.now().year
 
 INSTALLED_APPS = DJANGO_APPS + EXTERNAL_APPS + LOCAL_APPS
 
