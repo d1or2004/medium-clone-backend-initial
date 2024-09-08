@@ -109,11 +109,11 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',  # drf_spectacular swagger uchun sozlamalar
-    'DEFAULT_AUTHENTICATION_CLASSES': [
+    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         # swagger orqali authenticate qilishda username va password orqali kirishga ruxsat berish uchun
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
+        'users.authentications.CustomJWTAuthentication',
+    ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
