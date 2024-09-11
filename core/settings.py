@@ -3,6 +3,9 @@ from decouple import config
 from datetime import timedelta, datetime
 import os
 from django.utils.translation import gettext_lazy as _
+from loguru import logger
+import sys
+from .custom_logging import InterceptHandler
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -63,7 +66,30 @@ REDIS_PORT = config('REDIS_PORT', default='6379')
 REDIS_DB = config('REDIS_DB', default='1')
 
 REDIS_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'
+logger.info(f"Using redis | URL: {REDIS_URL}")
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'intercept': {
+            '()': InterceptHandler,
+            'level': 0,
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'django.log',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['intercept', 'file'],
+            'level': "DEBUG",
+            'propagate': True,
+        },
+    }
+}
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
@@ -87,6 +113,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'core.middlewares.LogRequestMiddleware',
 ]
 
 ROOT_URLCONF = "core.urls"
