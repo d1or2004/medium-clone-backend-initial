@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate, update_session_auth_hash
 from rest_framework.exceptions import ValidationError
+from rest_framework.viewsets import ModelViewSet
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from .serializers import (
@@ -16,7 +17,7 @@ from .serializers import (
     ForgotPasswordVerifyRequestSerializer,
     ResetPasswordResponseSerializer,
     ForgotPasswordVerifyResponseSerializer,
-    ForgotPasswordResponseSerializer, )
+    ForgotPasswordResponseSerializer, ArticleCreateSerializer)
 from django.contrib.auth import get_user_model
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from django_redis import get_redis_connection
@@ -26,6 +27,7 @@ import random
 from django.contrib.auth.hashers import make_password
 from secrets import token_urlsafe
 from .errors import ACTIVE_USER_NOT_FOUND_ERROR_MSG
+from .models import Article
 
 User = get_user_model()
 
@@ -300,3 +302,25 @@ class ResetPasswordView(generics.UpdateAPIView):
         tokens = UserService.create_tokens(user, is_force_add_to_redis=True)
         redis_conn.delete(token_hash)
         return Response(tokens)
+
+
+class ArticlesView(ModelViewSet):
+    """Maqolalarni yaratish va olish uchun API."""
+    queryset = Article.objects.all()
+    serializer_class = ArticleCreateSerializer
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(author=request.user)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        # Agar maqola public bo'lmasa va foydalanuvchi moderator bo'lmasa, uni ko'rsatmang
+        if not instance.is_public and not request.user.is_staff:
+            return Response({"detail": "Maqola hali ommaga ko'rsatilmaydi."}, status=403)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
