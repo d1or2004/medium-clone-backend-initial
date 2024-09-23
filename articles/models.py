@@ -25,10 +25,10 @@ class Topic(models.Model):
         verbose_name = "Topic"
         verbose_name_plural = "Topics"
         db_table = 'topic'
+        ordering = ['name']
 
 
 class Article(models.Model):
-
     """Maqolalarni saqlash uchun model."""
     STATUS_CHOICES = [
         ('draft', 'Draft'),
@@ -51,7 +51,7 @@ class Article(models.Model):
         return self.title
 
     class Meta:
-        ordering = ['-created_at']
+        # ordering = ['-created_at']
         verbose_name = "Article"
         db_table = "article"
 
