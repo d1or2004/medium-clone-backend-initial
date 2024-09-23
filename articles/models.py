@@ -51,7 +51,7 @@ class Article(models.Model):
         return self.title
 
     class Meta:
-        # ordering = ['-created_at']
+        ordering = ['-created_at']
         verbose_name = "Article"
         db_table = "article"
 
