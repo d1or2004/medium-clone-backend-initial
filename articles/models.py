@@ -51,7 +51,8 @@ class Article(models.Model):
 
     class Meta:
         ordering = ['-created_at']
-        verbose_name = "article"
+        verbose_name = "Article"
+        db_table = "article"
 
 
 class Clap(models.Model):
