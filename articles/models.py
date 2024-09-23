@@ -24,6 +24,7 @@ class Topic(models.Model):
     class Meta:
         verbose_name = "Topic"
         verbose_name_plural = "Topics"
+        db_table = 'topic'
 
 
 class Article(models.Model):
