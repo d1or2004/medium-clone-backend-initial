@@ -27,6 +27,7 @@ class Topic(models.Model):
 
 
 class Article(models.Model):
+
     """Maqolalarni saqlash uchun model."""
     STATUS_CHOICES = [
         ('draft', 'Draft'),
@@ -50,6 +51,7 @@ class Article(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+        verbose_name = "Article"
 
 
 class Clap(models.Model):
