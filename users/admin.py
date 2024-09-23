@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, Topic, Article
+from .models import CustomUser
 
 
 @admin.register(CustomUser)
@@ -18,16 +18,3 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ('username', 'email', 'first_name', 'last_name', 'middle_name')
     list_filter = ('last_login', 'date_joined', 'is_staff', 'is_superuser', 'is_active')
 
-
-@admin.register(Topic)
-class TopicAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description')
-    search_fields = ('name', 'description')
-    list_display_links = ('name', 'description')
-
-
-@admin.register(Article)
-class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'content')
-    search_fields = ('title', 'content')
-    list_display_links = ('title', 'content')

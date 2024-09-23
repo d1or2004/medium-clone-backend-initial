@@ -19,6 +19,7 @@ def is_superuser(user):
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('users/', include('users.urls')),
+    path('articles/', include('articles.urls')),
     path('health/', lambda _: JsonResponse({'detail': 'Healthy'}), name='health'),
     path('schema/', user_passes_test(is_superuser)(SpectacularAPIView.as_view()), name='schema'),
     path('swagger/', user_passes_test(is_superuser)(SpectacularSwaggerView.as_view()), name='swagger-ui'),

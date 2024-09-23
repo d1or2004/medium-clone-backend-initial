@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-from .views import ArticlesView
 
 urlpatterns = [
     path('signup/', views.SignupView.as_view(), name='signup'),  # Foydalanuvchi ro'yxatdan o'tishi uchun
@@ -13,6 +12,5 @@ urlpatterns = [
     path('password/forgot/verify/<str:otp_secret>/', views.ForgotPasswordVerifyView.as_view(), name="forgot-verify"),
     # Parolni unutganlar uchun OTP tekshiruvi
     path('password/reset/', views.ResetPasswordView.as_view(), name='reset-password'),  # Parolni tiklash
-    path('articles/', ArticlesView.as_view({'get': 'list', 'post': 'create'}), name='articles-list-create'),
-    # Maqolalarni ko'rish va yaratish
+
 ]
