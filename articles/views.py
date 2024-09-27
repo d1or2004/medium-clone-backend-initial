@@ -1,5 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
-from .serializers import Article, ArticleCreateSerializer
+from .serializers import Article, ArticleCreateSerializer, ArticleDetailSerializer
 from .models import Article
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -9,8 +9,12 @@ from rest_framework import status
 class ArticlesView(ModelViewSet):
     """Maqolalarni yaratish va olish uchun API."""
     queryset = Article.objects.all()
-    serializer_class = ArticleCreateSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return ArticleDetailSerializer
+        return ArticleCreateSerializer
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -21,7 +25,6 @@ class ArticlesView(ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        # Agar maqola public bo'lmasa va foydalanuvchi moderator bo'lmasa, uni ko'rsatmang
         if not instance.is_public and not request.user.is_staff:
             return Response({"detail": "Maqola hali ommaga ko'rsatilmaydi."}, status=403)
         serializer = self.get_serializer(instance)

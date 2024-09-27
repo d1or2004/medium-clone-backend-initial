@@ -3,5 +3,5 @@ from django.urls import path
 
 urlpatterns = [
     path('articles/', ArticlesView.as_view({'get': 'list', 'post': 'create'}), name='articles-list-create'),
-    # Maqolalarni ko'rish va yaratish
+    path('articles/<int:pk>/', ArticlesView.as_view({'get': 'retrieve'}), name='article-detail'),
 ]
