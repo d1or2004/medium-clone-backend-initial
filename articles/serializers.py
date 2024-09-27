@@ -35,7 +35,7 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
                   'created_at', 'updated_at']
 
     def create(self, validated_data):
-        topic_ids = validated_data.pop('topics')
+        topic_ids = validated_data.pop('topic_ids', [])  # 'topic_ids' ni olish
         article = Article.objects.create(**validated_data)
         article.topics.set(topic_ids)
         return article
