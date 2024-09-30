@@ -7,9 +7,9 @@ from users.models import CustomUser
 
 
 def thumbnail_file(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = f'{uuid.uuid4()}.{ext}'
-    return os.path.join('users/thumbnails/', filename)
+    ext = filename.split('.')[-1]  # Fayl kengaytmasini oladi
+    filename = f'{uuid.uuid4()}.{ext}'  # UUID orqali yangi fayl nomi yaratadi
+    return os.path.join('users/thumbnails/', filename)  # Faylni users/thumbnails papkasiga saqlaydi
 
 
 class Topic(models.Model):
