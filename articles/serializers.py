@@ -36,7 +36,11 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         topic_ids = validated_data.pop('topic_ids', [])  # 'topic_ids' ni olish
-        article = Article.objects.create(**validated_data)
+        if not isinstance(topic_ids, list):
+            topic_ids = [topic_ids]
+        request = self.context.get('request')
+        author = request.user
+        article = Article.objects.create(author=author, **validated_data)
         article.topics.set(topic_ids)
         return article
 
