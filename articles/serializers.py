@@ -24,10 +24,10 @@ class TopicSerializer(serializers.ModelSerializer):
 class ArticleCreateSerializer(serializers.ModelSerializer):
     """Maqolani yaratish uchun serializer."""
     author = AuthorSerializer(read_only=True)
-    topics = TopicSerializer(many=True, read_only=True)
     topic_ids = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=Topic.objects.all(), write_only=True, source='topics'
+        queryset=Topic.objects.filter(is_active=True), many=True, write_only=True, required=True
     )
+    topics = TopicSerializer(many=True, read_only=True)
 
     class Meta:
         model = Article
@@ -35,12 +35,8 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
                   'created_at', 'updated_at']
 
     def create(self, validated_data):
-        topic_ids = validated_data.pop('topic_ids', [])  # 'topic_ids' ni olish
-        if not isinstance(topic_ids, list):
-            topic_ids = [topic_ids]
-        request = self.context.get('request')
-        author = request.user
-        article = Article.objects.create(author=author, **validated_data)
+        topic_ids = validated_data.pop('topic_ids', [])
+        article = Article.objects.create(**validated_data)
         article.topics.set(topic_ids)
         return article
 
