@@ -19,9 +19,9 @@ def test_swagger_urls_set_correctly():
     redoc_path = reverse('redoc')
 
 
-    assert schema_path == '/schema/', "Schema path is not configured correctly"
-    assert swagger_path == '/swagger/', "Swagger path is not configured correctly"
-    assert redoc_path == '/redoc/', "Redoc path is not configured correctly"
+    assert schema_path == '/api/schema/', "Schema path is not configured correctly"
+    assert swagger_path == '/api/swagger/', "Swagger path is not configured correctly"
+    assert redoc_path == '/api/redoc/', "Redoc path is not configured correctly"
 
 
 
@@ -60,9 +60,9 @@ def test_swagger_schema(client, user_factory):
     assert 'DEFAULT_SCHEMA_CLASS' in settings.REST_FRAMEWORK, "DEFAULT_SCHEMA_CLASS package is not installed"
     assert hasattr(settings, 'SPECTACULAR_SETTINGS'), "SPECTACULAR_SETTINGS not found in settings"
 
-    assert schema_path == '/schema/', "Schema path is not configured correctly"
-    assert swagger_path == '/swagger/', "Swagger path is not configured correctly"
-    assert redoc_path == '/redoc/', "Redoc path is not configured correctly"
+    assert schema_path == '/api/schema/', "Schema path is not configured correctly"
+    assert swagger_path == '/api/swagger/', "Swagger path is not configured correctly"
+    assert redoc_path == '/api/redoc/', "Redoc path is not configured correctly"
 
     response = client.get(swagger_path)
     assert response.status_code == status.HTTP_200_OK, f"Failed to fetch Swagger UI, received status code {response.status_code}"
